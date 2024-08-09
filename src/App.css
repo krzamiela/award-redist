@@ -66,6 +66,7 @@
   gap: 10px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   margin: 20px;
+  color: #000000;
 }
 
 .sidebar h3 {
@@ -115,7 +116,8 @@
 .user-group {
   flex: 1;
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid white;
+  background-color: rgb(27, 40, 82);
   text-align: center;
   margin-right: 320px; /* account for sidebar */
 }
@@ -140,12 +142,14 @@
 
 .user h3 {
   margin-top: 0;
+  color: #000;
 }
 
 .user .items {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  color: #000;
 }
 
 .item {
