@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { calculateAverageWeightPerFTE, groupAwardsByDept, groupUsersByTitle, readExcelFile, FTE_VALUES } from './utils';
+import { calculateAverageWeightPerFTE, calculateAverageWeightAssistant, groupAwardsByDept, groupUsersByTitle, readExcelFile, FTE_VALUES } from './utils';
 import './App.css';
 import User from './User';
 
@@ -64,8 +64,14 @@ const App = () => {
   const updatedUsers = useMemo(() => calculateTotalWeights(users, awards), [users, awards]);
   const groupedUsers = useMemo(() => groupUsersByTitle(updatedUsers), [updatedUsers]);
   const averageWeightPerFTE = useMemo(() => calculateAverageWeightPerFTE(updatedUsers), [updatedUsers]);
-  const groupedAwards = useMemo(() => groupAwardsByDept(awards), [awards]);
+  const assistantUsers = useMemo(() => {
+    return updatedUsers.filter(user => user["User Title"] === "Assistant GCFA");
+  }, [updatedUsers]);
+  const averageWeightAssistant = useMemo(() => {
+    return calculateAverageWeightAssistant(assistantUsers);
+  }, [assistantUsers]);
 
+  const groupedAwards = useMemo(() => groupAwardsByDept(awards), [awards]);
   const handleAwdClick = (award: Award) => {
     setSelectedItems(prevAwards => {
       if (prevAwards.some(a => a["Contract"] === award["Contract"])) {
@@ -172,7 +178,13 @@ const App = () => {
         {selectedChoice !== "" &&  (
           <div className="users">
           {Object.keys(groupedUsers).map((title) => {
-            const avgWeight = averageWeightPerFTE * FTE_VALUES[title];
+            let avgWeight = 0.0;
+
+            if (title === "Assistant GCFA") {
+              avgWeight = averageWeightAssistant; 
+            } else {
+              avgWeight = averageWeightPerFTE * FTE_VALUES[title];
+            }
 
             return (
               <div key={title} className="user-group">

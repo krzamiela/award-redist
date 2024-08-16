@@ -25,7 +25,8 @@ export const filterUsers = (data: User[]): User[] => {
   return data.filter(user =>
     user["User Title"] === "GCFA" ||
     user["User Title"] === "Senior GCFA" ||
-    user["User Title"] === "Director"
+    user["User Title"] === "Director" ||
+    user["User Title"] === "Assistant GCFA"
   );
 };
 
@@ -41,6 +42,19 @@ export const calculateAverageWeightPerFTE = (users: User[]): number => {
   });
 
   return totalFTE > 0 ? totalWeight / totalFTE : 0;
+}
+
+  // Calculate average weight for assistant GCFA
+export const calculateAverageWeightAssistant = (users: User[]): number => {
+  let totalWeight = 0;
+  let totalUsers = 0;
+
+  users.forEach(user => {
+    totalUsers += 1;
+    totalWeight += user.totalWeight || 0;
+  });
+
+  return totalUsers > 0 ? totalWeight / totalUsers : 0;
 };
 
 // Read Excel file and set data, filtering users if necessary
