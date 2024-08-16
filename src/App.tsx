@@ -194,7 +194,7 @@ const App = () => {
                     <User
                       key={user["Contract Admin"]}
                       user={user}
-                      awards={selectedChoice === "awd" ? awards.filter((award) => award["Contract Admin"] === user["Contract Admin"]) : Object.values(groupedAwards).flat().filter((award) => award.usr === user["Contract Admin"])}
+                      awards={selectedChoice === "awd" ? awards.filter((award) => award["Contract Admin"] === user["Contract Admin"]).sort((a, b) => Number(b["Weight_Total"]) - Number(a["Weight_Total"])) : Object.values(groupedAwards).flat().filter((award) => award.usr === user["Contract Admin"]).sort((a, b) => Number(b.totalWeight) - Number(a.totalWeight))}
                       displayType={selectedChoice}
                       highlightedItems={selectedItems}
                       averageWeight={avgWeight}
